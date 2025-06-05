@@ -6,7 +6,7 @@ from django import forms
 
 class UsuarioAdmin(BaseUserAdmin):
     model = Usuario
-    list_display = ('correo', 'nombre', 'is_staff', 'is_superuser', 'is_active')
+    list_display = ('correo', 'nombre', 'is_staff', 'is_superuser', 'is_active', 'fecha_creacion', 'ultimo_acceso', 'estado')
     list_filter = ('is_staff', 'is_superuser', 'is_active')
     search_fields = ('correo', 'nombre')
     ordering = ('correo',)
