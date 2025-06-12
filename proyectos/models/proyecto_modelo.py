@@ -3,7 +3,7 @@ from django.db import models
 class Proyecto(models.Model):
     ESTADO_CHOICES = [
         ('Activado', 'Activado'),
-          ('Finalizado', 'Finalizado'),
+        ('Finalizado', 'Finalizado'),
     ]
     
     nombre = models.CharField(max_length=100)

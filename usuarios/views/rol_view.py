@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 from usuarios.models.rol_modelo import Rol
 from usuarios.serializers.rol_serializer import RolSerializer
@@ -13,6 +14,7 @@ def list_rol(request):
     return Response(serializer.data, status.HTTP_200_OK)
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def create_rol(request):
     ''' Listar roles '''
     serializer = RolSerializer(data = request.data)

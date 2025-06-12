@@ -6,6 +6,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny
 from usuarios.models import Usuario
 
+from proyectos.utils.notificacion_utils import enviar_correo_bienvenida, enviar_correo_ya_registrado
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login_view(request):
@@ -43,6 +45,7 @@ def register_view(request):
         return Response({'error': 'Todos los campos son obligatorios.'}, status=status.HTTP_400_BAD_REQUEST)
 
     if Usuario.objects.filter(correo=correo).exists():
+        enviar_correo_ya_registrado(correo)
         return Response({'error': 'Ya existe un usuario con este correo.'}, status=status.HTTP_400_BAD_REQUEST)
 
     user = Usuario.objects.create_user(
@@ -50,6 +53,7 @@ def register_view(request):
         correo=correo,
         password=password
     )
+    enviar_correo_bienvenida(correo, nombre)
 
     refresh = RefreshToken.for_user(user)
 

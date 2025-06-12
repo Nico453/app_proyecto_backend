@@ -4,6 +4,7 @@ from proyectos.models.proyecto_modelo import Proyecto
 from proyectos.serializers.proyecto_serializer import ProyectoSerializer
 from proyectos.models.usuario_proyecto_modelo import UsuarioProyecto
 from usuarios.models.rol_modelo import Rol
+from proyectos.serializers.usuario_proyecto_serializer import UsuarioProyectoSerializer
 
 class ProyectoViewSet(viewsets.ModelViewSet):
     queryset = Proyecto.objects.all()
@@ -23,3 +24,4 @@ class ProyectoViewSet(viewsets.ModelViewSet):
             rol=rol_pm,
             estado="Activo"
         )
+        
