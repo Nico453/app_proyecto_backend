@@ -51,3 +51,17 @@ def enviar_correo_notificacion_invitacion(correo_destino, invitacion):
         recipient_list=[correo_destino],
         fail_silently=False
     )
+    
+    
+def enviar_correo_notificacion_historia_usuario(correo_destino, historia):
+    asunto='Asignacion Historia de Usuario'
+    mensaje = f"Se te ha asignado la historia:  '{historia.titulo}'en el proyecto '{historia.usuario_proyecto.proyecto.nombre}'."
+    
+    send_mail(
+        subject=asunto,
+        message=mensaje,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[correo_destino],
+        fail_silently=False
+    )
+

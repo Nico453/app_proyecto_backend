@@ -14,10 +14,16 @@ class HistoriaUsuarioSerializer(serializers.ModelSerializer):
         usuario = request.user
         usuario_proyecto = data.get('usuario_proyecto')
 
-        if usuario_proyecto.usuario != usuario:
-            raise serializers.ValidationError("Solo puedes crear historias desde tus proyectos.")
+           
+        usuario_proyecto = data.get('usuario_proyecto') or getattr(self.instance, 'usuario_proyecto', None)
+        if not usuario_proyecto:
+            raise serializers.ValidationError("No se encontró relación usuario-proyecto.")
 
-        if usuario_proyecto.rol_id != 2:
-            raise serializers.ValidationError("Solo los usuarios con rol Scrum Master pueden crear historias.")
+       
+        if request.method == 'POST' or 'estado' in data:
+            if usuario_proyecto.usuario != usuario:
+                raise serializers.ValidationError("Solo puedes modificar tus propias historias.")
+            if usuario_proyecto.rol.id != 2:  
+                raise serializers.ValidationError("Solo el Scrum Master puede realizar esta acción.")
 
         return data
