@@ -21,9 +21,20 @@ def login_view(request):
     if user:
         refresh = RefreshToken.for_user(user)
         return Response(
-            {
+            {   
+                'mensaje': 'Inicio de sesión exitoso',
+                'status': status.HTTP_200_OK,
                 'refresh' : str(refresh),
-                'token' : str(refresh.access_token)
+                'token' : str(refresh.access_token),
+                'user': {
+                    'id': user.id,
+                    'nombre': user.nombre,
+                    'correo': user.correo,
+                    'fecha_creacion': user.fecha_creacion,
+                    'ultimo_acceso': user.ultimo_acceso,
+                    'estado': user.estado,
+                    'is_active': user.is_active
+                }
             }
         )
     else:
@@ -59,6 +70,16 @@ def register_view(request):
 
     return Response({
         'mensaje': 'Usuario registrado exitosamente.',
+        'status': status.HTTP_201_CREATED,
         'refresh': str(refresh),
-        'token': str(refresh.access_token)
+        'token': str(refresh.access_token),
+        'user': {
+            'id': user.id,
+            'nombre': user.nombre,
+            'correo': user.correo,
+            'fecha_creacion': user.fecha_creacion,
+            'ultimo_acceso': user.ultimo_acceso,
+            'estado': user.estado,
+            'is_active': user.is_active
+        }
     }, status=status.HTTP_201_CREATED)

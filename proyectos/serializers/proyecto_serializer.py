@@ -4,4 +4,5 @@ from proyectos.models.proyecto_modelo import Proyecto
 class ProyectoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Proyecto
-        fields = '__all__'
+        fields = ['id', 'nombre', 'estado', 'fecha_actualizacion']  # usuario excluido
+        read_only_fields = ['fecha_actualizacion']

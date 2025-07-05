@@ -9,24 +9,24 @@ from proyectos.serializers.usuario_proyecto_serializer import UsuarioProyectoSer
 from drf_yasg.utils import swagger_auto_schema
 
 class ProyectoViewSet(viewsets.ModelViewSet):
-    queryset = Proyecto.objects.all()
     serializer_class = ProyectoSerializer
     permission_classes = [IsAuthenticated]
-    
+
+    def get_queryset(self):
+        return Proyecto.objects.filter(usuario=self.request.user)
+
     def perform_create(self, serializer):
-        proyecto = serializer.save()
-        usuario = self.request.user
+        proyecto = serializer.save(usuario=self.request.user)  # Asigna el usuario directamente
 
-        
-        rol_pm = Rol.objects.get(id=1) 
-
+        # Asignar el rol al usuario creador
+        rol_pm = Rol.objects.get(id=1)
         UsuarioProyecto.objects.create(
-            usuario=usuario,
+            usuario=self.request.user,
             proyecto=proyecto,
             rol=rol_pm,
             estado="Activo"
         )
-    
+
     @swagger_auto_schema(tags=["proyectos_app.Proyecto"])
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)

@@ -31,7 +31,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     nombre          = models.CharField(max_length=50)
     correo          = models.EmailField(unique=True)
     fecha_creacion  = models.DateTimeField(default=timezone.now)
-    ultimo_acceso   = models.DateTimeField(auto_now=True)
+    ultimo_acceso   = models.DateTimeField(auto_now=True)#no se actualiza el ultimo acceso 
     estado          = models.CharField(max_length=20, default="Activo")
 
     is_active       = models.BooleanField(default=True)
