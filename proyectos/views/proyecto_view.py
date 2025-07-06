@@ -13,7 +13,11 @@ class ProyectoViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Proyecto.objects.filter(usuario=self.request.user)
+        usuario = self.request.user
+        # Obtener IDs de proyectos donde el usuario está asignado
+        proyectos_ids = UsuarioProyecto.objects.filter(usuario=usuario).values_list('proyecto_id', flat=True)
+        return Proyecto.objects.filter(id__in=proyectos_ids)
+
 
     def perform_create(self, serializer):
         proyecto = serializer.save(usuario=self.request.user)  # Asigna el usuario directamente
