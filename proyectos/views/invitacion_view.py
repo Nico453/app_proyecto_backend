@@ -25,6 +25,7 @@ class InvitacionViewSet(viewsets.ModelViewSet):
             usuario=invitacion.usuario,
             titulo='Invitación a un proyecto',
             mensaje=f"Has sido invitado al proyecto '{invitacion.proyecto.nombre}' con rol'{invitacion.rol}'. Puedes aceptarla o rechazarla desde tu perfil.",
+            invitacion=invitacion
         )
 
         # Notificación por correo
