@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from proyectos.models.usuario_proyecto_modelo import UsuarioProyecto
+from proyectos.serializers.proyecto_serializer import ProyectoSerializer
 
 class UsuarioProyectoSerializer(serializers.ModelSerializer):
+    proyecto = ProyectoSerializer()
     class Meta:
         model = UsuarioProyecto
         fields = '__all__'

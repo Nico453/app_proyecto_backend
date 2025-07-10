@@ -26,7 +26,8 @@ class HistoriaUsuarioViewSet(viewsets.ModelViewSet):
         Notificacion.objects.create(
             usuario=usuario_destino,
             titulo='Historia nueva asignada',
-            mensaje=f"Se te ha asignado la historia: '{historia.titulo}' en el proyecto '{proyecto_nombre}'."
+            mensaje=f"Se te ha asignado la historia: '{historia.titulo}' en el proyecto '{proyecto_nombre}'.",
+            historia=historia
         )
         # Notificación por correo
         enviar_correo_notificacion_historia_usuario(correo, historia )
