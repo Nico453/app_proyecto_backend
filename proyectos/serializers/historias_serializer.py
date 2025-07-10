@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from proyectos.models.historias_modelo import HistoriaUsuario
+from proyectos.serializers.usuario_proyecto_serializer import UsuarioProyectoSerializer
 
 class HistoriaUsuarioSerializer(serializers.ModelSerializer):
+    asignado_a = UsuarioProyectoSerializer()
     class Meta:
         model = HistoriaUsuario
         fields = '__all__'
@@ -27,3 +29,4 @@ class HistoriaUsuarioSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Solo el Scrum Master puede realizar esta acción.")
 
         return data
+    

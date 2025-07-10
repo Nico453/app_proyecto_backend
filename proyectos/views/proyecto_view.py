@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from proyectos.models.proyecto_modelo import Proyecto
 from proyectos.serializers.proyecto_serializer import ProyectoSerializer
@@ -8,21 +8,30 @@ from proyectos.serializers.usuario_proyecto_serializer import UsuarioProyectoSer
 
 from drf_yasg.utils import swagger_auto_schema
 
+
 class ProyectoViewSet(viewsets.ModelViewSet):
+    """
+    CRUD de Proyectos filtrado por usuario + asignación automática de rol PM al crear.
+    """
     serializer_class = ProyectoSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        # Durante la generación de docs o si no hay usuario autenticado,
+        # devolvemos un QuerySet vacío para evitar el TypeError.
+        if getattr(self, 'swagger_fake_view', False) or self.request.user.is_anonymous:
+            return Proyecto.objects.none()
+
         usuario = self.request.user
-        # Obtener IDs de proyectos donde el usuario está asignado
-        proyectos_ids = UsuarioProyecto.objects.filter(usuario=usuario).values_list('proyecto_id', flat=True)
+        proyectos_ids = UsuarioProyecto.objects.filter(
+            usuario=usuario
+        ).values_list('proyecto_id', flat=True)
         return Proyecto.objects.filter(id__in=proyectos_ids)
 
-
     def perform_create(self, serializer):
-        proyecto = serializer.save(usuario=self.request.user)  # Asigna el usuario directamente
+        proyecto = serializer.save(usuario=self.request.user)
 
-        # Asignar el rol al usuario creador
+        # Asignar el rol PM al creador
         rol_pm = Rol.objects.get(id=1)
         UsuarioProyecto.objects.create(
             usuario=self.request.user,
