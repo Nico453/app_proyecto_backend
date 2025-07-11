@@ -15,3 +15,5 @@ DATABASES = {
 
 
 STATIC_URL = 'static/'
+ROOT_URLCONF = 'app_proyecto.urls'
+
