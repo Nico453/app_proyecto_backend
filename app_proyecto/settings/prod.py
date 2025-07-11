@@ -16,4 +16,6 @@ DATABASES = {
 
 STATIC_URL = 'static/'
 ROOT_URLCONF = 'app_proyecto.urls'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
